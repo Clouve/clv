@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+docker run -it --rm \
+    -v "$PWD:/root" \
+    -w "/root" \
+    --entrypoint "npm" \
+    node $@
