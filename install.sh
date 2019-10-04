@@ -9,15 +9,11 @@ fi
 # --- install clv --- #
 mkdir ~/.clv
 mkdir ~/.clv/bin
-cp -r "$SCRIPTPATH/bin/" ~/.clv/bin
 touch ~/.bash_profile
 echo "export PATH=\"~/.clv/bin:\$PATH\" #ADDED BY CLV INSTALLER#" > ~/.bash_profile
-
-# --- install clv commands --- #
-
-for cmd in "$SCRIPTPATH/bin"/*
+for cmd in "$SCRIPTPATH"/bin/*
 do
-  "$cmd" CLV_ENV_SETUP
+    "$cmd" CLV_ENV_SETUP
 done
 
 echo "clv has been installed successfully!"

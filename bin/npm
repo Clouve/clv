@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
+SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "CLV_ENV_SETUP" ]]; then
-    echo "clv is setting up environment for npm"
-    docker run --rm \
-        -v "$HOME/.clv/root:/root" \
-        -v "$PWD:/clv" \
-        -w "/clv" \
-        node npm config set prefix '/root/node'
+    if [[ ! -e ~/.clv/bin/npm ]]; then
+        echo "clv is setting up environment for npm"
+        "$SCRIPTPATH"/node CLV_ENV_SETUP
+        cp "$SCRIPTPATH/npm" ~/.clv/bin/npm
+    fi
 else
     docker run -it --rm \
         --entrypoint "npm" \
