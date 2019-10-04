@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+#prepare node container environment
+docker run -it --rm \
+    -v "$HOME/.clv/root:/root" \
+    -v "$PWD:/clv" \
+    -w "/clv" \
+    node npm config set prefix '/root/nodejs'
+
+docker run -it --rm \
+    --network host \
+    -e PATH="/root/nodejs/bin:$PATH" \
+    -v "$HOME/.clv/root:/root" \
+    -v "$PWD:/clv" \
+    -w "/clv" \
+    -a STDOUT \
+    node $@
