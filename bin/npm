@@ -1,10 +1,14 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-if [[ $1 == "CLV_ENV_SETUP" ]]; then
+if [[ $1 == "clv-install" ]]; then
     if [[ ! -e ~/.clv/bin/npm ]]; then
-        echo "clv is setting up environment for npm"
-        "$SCRIPTPATH"/node CLV_ENV_SETUP
-        cp "$SCRIPTPATH/npm" ~/.clv/bin/npm
+        "$SCRIPTPATH"/node clv-install
+        if [[ -e ~/.clv/bin/node ]]; then
+            echo "clv is installing npm"
+            cp "$SCRIPTPATH/npm" ~/.clv/bin/npm
+        else
+            echo "node does not exist"
+        fi
     fi
 else
     docker run -it --rm \

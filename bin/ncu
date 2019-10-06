@@ -1,11 +1,17 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
-if [[ $1 == "CLV_ENV_SETUP" ]]; then
+if [[ $1 == "clv-install" ]]; then
     if [[ ! -e ~/.clv/bin/ncu ]]; then
-        echo "clv is setting up environment for ncu"
-        "$SCRIPTPATH"/npm CLV_ENV_SETUP
-        npm i -g npm-check-updates
-        cp "$SCRIPTPATH/ncu" ~/.clv/bin/ncu
+        "$SCRIPTPATH"/npm clv-install
+        if [[ -e ~/.clv/bin/npm ]]; then
+            echo "clv is installing ncu"
+            npm i -g npm-check-updates
+            if [[ -e ~/.clv/root/node/bin/ncu ]]; then
+                cp "$SCRIPTPATH/ncu" ~/.clv/bin/ncu
+            fi
+        else
+            echo "npm does not exist"
+        fi
     fi
 else
     node ncu $@
