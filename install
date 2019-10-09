@@ -10,6 +10,7 @@ fi
 mkdir ~/.clv
 mkdir ~/.clv/bin
 touch ~/.bash_profile
+export PATH="~/.clv/bin:$PATH"
 echo "export PATH=\"~/.clv/bin:\$PATH\" #ADDED BY CLV INSTALLER#" > ~/.bash_profile
 for cmd in "$SCRIPTPATH"/bin/*
 do
