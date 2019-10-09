@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-docker run -it --rm \
-    --network host \
-    -v "$HOME/.clv/root:/root" \
-    -v "$PWD:/clv" \
-    -w "/clv" \
-    -a STDOUT \
-    node $@
