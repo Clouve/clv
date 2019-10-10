@@ -14,6 +14,6 @@ else
         -v "$PWD:/clv" \
         -w "/clv" \
         -a STDOUT \
-        alpine/git $@
+        alpine/git "$@"
 fi
 

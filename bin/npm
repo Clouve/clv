@@ -19,5 +19,5 @@ else
         -v "$PWD:/clv" \
         -w "/clv" \
         -a STDOUT \
-        node $@
+        node "$@"
 fi
