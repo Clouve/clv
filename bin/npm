@@ -14,8 +14,8 @@ else
     docker run -it --rm \
         --entrypoint "npm" \
         --network host \
-        -e PATH="/root/node/bin:$PATH" \
-        -v "$HOME/.clv/root:/root" \
+        -e PATH="/home/node/bin:$PATH" \
+        -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
         -w "/clv" \
         -a STDOUT \
