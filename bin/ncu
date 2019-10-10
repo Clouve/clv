@@ -14,5 +14,13 @@ if [[ $1 == "clv-install" ]]; then
         fi
     fi
 else
-    node ncu $@
+    docker run -it --rm \
+        --entrypoint "ncu" \
+        --network host \
+        -e PATH="/root/node/bin:$PATH" \
+        -v "$HOME/.clv/root:/root" \
+        -v "$PWD:/clv" \
+        -w "/clv" \
+        -a STDOUT \
+        node $@
 fi
