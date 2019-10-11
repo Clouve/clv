@@ -6,7 +6,7 @@ if [[ $1 == "clv-install" ]]; then
         if [[ -e ~/.clv/bin/npm ]]; then
             echo "clv is installing ncu"
             npm i -g npm-check-updates
-            if [[ -e ~/.clv/root/node/bin/ncu ]]; then
+            if [[ -e ~/.clv/home/node/bin/ncu ]]; then
                 cp "$SCRIPTPATH/ncu" ~/.clv/bin/ncu
             fi
         else
@@ -14,5 +14,13 @@ if [[ $1 == "clv-install" ]]; then
         fi
     fi
 else
-    node ncu $@
+    docker run -it --rm \
+        --entrypoint "ncu" \
+        --network host \
+        -e PATH="/home/node/bin:$PATH" \
+        -v "$HOME/.clv/home:/root" \
+        -v "$PWD:/clv" \
+        -w "/clv" \
+        -a STDOUT \
+        node "$@"
 fi
