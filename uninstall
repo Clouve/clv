@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
-rm -rf ~/.clv
-if grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
+if [[ -e ~/.bash_profile ]] && grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
     sed -i.bak '/#ADDED BY CLV INSTALLER#/d' ~/.bash_profile
 fi
-
+rm -rf ~/.clv
 echo "clv has been uninstalled successfully!"
