@@ -2,5 +2,12 @@
 if [[ -e ~/.bash_profile ]] && grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
     sed -i.bak '/#ADDED BY CLV INSTALLER#/d' ~/.bash_profile
 fi
+mv ~/.clv/home ~/.clv.home.bak
 rm -rf ~/.clv
-echo "clv has been uninstalled successfully!"
+if [[ $1 == "partially" ]]; then
+    mkdir ~/.clv
+    mv ~/.clv.home.bak ~/.clv/home
+    echo "clv has been partially uninstalled successfully!"
+else
+    echo "clv has been fully uninstalled successfully!"
+fi

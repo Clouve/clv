@@ -8,6 +8,8 @@ if [[ $1 == "clv-install" ]]; then
             npm i -g npm-check-updates
             if [[ -e ~/.clv/home/node/bin/ncu ]]; then
                 cp "$SCRIPTPATH/ncu" ~/.clv/bin/ncu
+            else
+                echo "ncu didn't install properly"
             fi
         else
             echo "npm does not exist"
@@ -17,7 +19,7 @@ else
     docker run -it --rm \
         --entrypoint "ncu" \
         --network host \
-        -e PATH="/home/node/bin:$PATH" \
+        -e PATH="/root/node/bin:$PATH" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
         -w "/clv" \

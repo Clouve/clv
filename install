@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-# --- remove configurations added by clv installer --- #
+# --- uninstall clv commands if any --- #
 if [[ -e ~/.bash_profile ]] && grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
-    sed -i.bak '/#ADDED BY CLV INSTALLER#/d' ~/.bash_profile
+    ./uninstall partially
 fi
 
 # --- install clv --- #
 mkdir -p ~/.clv/bin
+if [[ -e ~/.clv.home.bak ]]; then
+    echo "restoring clv's home directory"
+    mv ~/.clv.home.bak ~/.clv/home
+fi
 touch ~/.bash_profile
 export PATH="~/.clv/bin:$PATH"
 echo "export PATH=\"~/.clv/bin:\$PATH\" #ADDED BY CLV INSTALLER#" > ~/.bash_profile

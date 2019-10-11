@@ -9,7 +9,6 @@ else
     docker run -it --rm \
         --entrypoint "git" \
         --network host \
-        -e PATH="/home/node/bin:$PATH" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
         -w "/clv" \
