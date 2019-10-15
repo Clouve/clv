@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/clv ]]; then
-        echo "clv is installing clv"
-        cp "$SCRIPTPATH/clv" ~/.clv/bin/clv
+    if [[ ! -e ~/.clv/bin/python ]]; then
+        echo "clv is installing python"
+        cp "$SCRIPTPATH/python" ~/.clv/bin/python
     fi
 else
     docker run -it --rm \
+        --entrypoint "python" \
         --network host \
         -e PYTHONUSERBASE="/root/python" \
-        -e PATH="/root/node/bin:$PATH" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
         -w "/clv" \
         -a STDOUT \
-        "$@"
+        python "$@"
 fi
 
