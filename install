@@ -1,19 +1,21 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-# --- uninstall existing clv if any --- #
+# --- uninstall clv commands if any --- #
 if [[ -e ~/.bash_profile ]] && grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
-    ./uninstall
+    ./uninstall partially
 fi
 
 # --- install clv --- #
-mkdir ~/.clv
-mkdir ~/.clv/bin
+mkdir -p ~/.clv/bin
+if [[ -e ~/.clv.home.bak ]]; then
+    echo "restoring clv's home directory"
+    mv ~/.clv.home.bak ~/.clv/home
+fi
 touch ~/.bash_profile
 export PATH="~/.clv/bin:$PATH"
 echo "export PATH=\"~/.clv/bin:\$PATH\" #ADDED BY CLV INSTALLER#" > ~/.bash_profile
-for cmd in "$SCRIPTPATH"/bin/*
-do
+for cmd in "$SCRIPTPATH"/bin/*; do
     "$cmd" clv-install
 done
 

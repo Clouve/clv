@@ -2,19 +2,19 @@
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
     if [[ ! -e ~/.clv/bin/node ]]; then
+        echo "clv is installing node"
         docker run --rm \
             -v "$HOME/.clv/home:/root" \
             -v "$PWD:/clv" \
             -w "/clv" \
-            node npm config set prefix '/home/node'
-        echo "clv is installing node"
+            node npm config set prefix "/root/node"
         cp "$SCRIPTPATH/node" ~/.clv/bin/node
     fi
 else
     docker run -it --rm \
         --entrypoint "node" \
         --network host \
-        -e PATH="/home/node/bin:$PATH" \
+        -e PATH="/root/node/bin:$PATH" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
         -w "/clv" \

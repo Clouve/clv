@@ -1,18 +1,19 @@
 #!/usr/bin/env bash
 SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/git ]]; then
-        echo "clv is installing git"
-        cp "$SCRIPTPATH/git" ~/.clv/bin/git
+    if [[ ! -e ~/.clv/bin/python2 ]]; then
+        echo "clv is installing python2"
+        cp "$SCRIPTPATH/python2" ~/.clv/bin/python2
     fi
 else
     docker run -it --rm \
-        --entrypoint "git" \
+        --entrypoint "python2" \
         --network host \
+        -e PYTHONUSERBASE="/root/python" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
         -w "/clv" \
         -a STDOUT \
-        alpine/git "$@"
+        python "$@"
 fi
 
