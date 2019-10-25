@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
     if [[ ! -e ~/.clv/bin/python2 ]]; then
         echo "clv is installing python2"
-        cp "$SCRIPTPATH/python2" ~/.clv/bin/python2
+        cp "$SCRIPT_PATH/python2" ~/.clv/bin/python2
     fi
 else
     docker run -it --rm \

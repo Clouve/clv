@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
     if [[ ! -e ~/.clv/bin/git ]]; then
         echo "clv is installing git"
-        cp "$SCRIPTPATH/git" ~/.clv/bin/git
+        cp "$SCRIPT_PATH/git" ~/.clv/bin/git
     fi
 else
     docker run -it --rm \

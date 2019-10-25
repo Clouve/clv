@@ -1,13 +1,13 @@
 #!/usr/bin/env bash
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
     if [[ ! -e ~/.clv/bin/ncu ]]; then
-        "$SCRIPTPATH"/npm clv-install
+        "$SCRIPT_PATH"/npm clv-install
         if [[ -e ~/.clv/bin/npm ]]; then
             echo "clv is installing ncu"
             npm i -g npm-check-updates
             if [[ -e ~/.clv/home/node/bin/ncu ]]; then
-                cp "$SCRIPTPATH/ncu" ~/.clv/bin/ncu
+                cp "$SCRIPT_PATH/ncu" ~/.clv/bin/ncu
             else
                 echo "ncu didn't install properly"
             fi
