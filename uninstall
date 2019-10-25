@@ -4,7 +4,7 @@ if [[ $1 ]]; then
         rm -rf ~/.clv/bin
         echo "clv has uninstalled $1 successfully!"
     else
-        COMMANDS=( $@ )
+        COMMANDS=( "$@" )
         for COMMAND in "${COMMANDS[@]}"; do
             rm -rf ~/.clv/bin/"$COMMAND"
             echo "clv has uninstalled $COMMAND command successfully!"
