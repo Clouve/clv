@@ -3,7 +3,7 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
 # --- uninstall clv commands if any --- #
 if [[ -e ~/.bash_profile ]] && grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
-    ./uninstall bin
+    "$SCRIPT_PATH"/uninstall bin
 fi
 
 # --- install clv --- #

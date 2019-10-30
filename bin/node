@@ -11,9 +11,10 @@ if [[ $1 == "clv-install" ]]; then
         cp "$SCRIPT_PATH/node" ~/.clv/bin/node
     fi
 else
+    source "$SCRIPT_PATH"/_ports
     docker run -it --rm \
+        ${PUBLISHED_PORTS:-"--network=host"} \
         --entrypoint "node" \
-        --network host \
         -e PATH="/root/node/bin:$PATH" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
