@@ -1,13 +1,25 @@
 #!/usr/bin/env bash
-if [[ -e ~/.bash_profile ]] && grep -q "#ADDED BY CLV INSTALLER#" ~/.bash_profile; then
-    sed -i.bak '/#ADDED BY CLV INSTALLER#/d' ~/.bash_profile
-fi
-mv ~/.clv/home ~/.clv.home.bak
-rm -rf ~/.clv
-if [[ $1 == "partially" ]]; then
-    mkdir ~/.clv
-    mv ~/.clv.home.bak ~/.clv/home
-    echo "clv has been partially uninstalled successfully!"
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+
+if [[ $1 ]]; then
+    if [[ $1 == "bin" ]]; then
+        for cmd in "$SCRIPT_PATH"/bin/*; do
+            "$cmd" clv-uninstall
+        done
+        echo "clv has uninstalled $1 successfully!"
+    else
+        COMMANDS=( "$@" )
+        for cmd in "${COMMANDS[@]}"; do
+            "$SCRIPT_PATH/bin/$cmd" clv-uninstall
+            echo "clv has uninstalled $cmd command successfully!"
+        done
+    fi
 else
+    for cmd in "$SCRIPT_PATH"/bin/*; do
+        "$cmd" clv-uninstall
+    done
+    if [[ -e ~/.clv/home ]]; then
+        mv ~/.clv/home ~/.clv.home.bak
+    fi
     echo "clv has been fully uninstalled successfully!"
 fi

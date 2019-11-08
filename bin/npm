@@ -1,19 +1,26 @@
 #!/usr/bin/env bash
-SCRIPTPATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/npm ]]; then
-        "$SCRIPTPATH"/node clv-install
-        if [[ -e ~/.clv/bin/node ]]; then
+    if [[ ! -e /usr/local/bin/npm ]]; then
+        "$SCRIPT_PATH"/_ports clv-install
+        "$SCRIPT_PATH"/node clv-install
+        if [[ -e /usr/local/bin/node ]]; then
             echo "clv is installing npm"
-            cp "$SCRIPTPATH/npm" ~/.clv/bin/npm
+            sudo cp "$SCRIPT_PATH/npm" /usr/local/bin/npm
         else
             echo "node does not exist"
         fi
     fi
+elif [[ $1 == "clv-uninstall" ]]; then
+    if [[ -e /usr/local/bin/npm ]]; then
+        echo "clv is uninstalling npm"
+        sudo rm /usr/local/bin/npm
+    fi
 else
+    source "$SCRIPT_PATH"/_ports
     docker run -it --rm \
+        ${PUBLISHED_PORTS:-"--network=host"} \
         --entrypoint "npm" \
-        --network host \
         -e PATH="/root/node/bin:$PATH" \
         -v "$HOME/.clv/home:/root" \
         -v "$PWD:/clv" \
