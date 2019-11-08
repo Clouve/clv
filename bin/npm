@@ -2,6 +2,7 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
     if [[ ! -e /usr/local/bin/npm ]]; then
+        "$SCRIPT_PATH"/_ports clv-install
         "$SCRIPT_PATH"/node clv-install
         if [[ -e /usr/local/bin/node ]]; then
             echo "clv is installing npm"
