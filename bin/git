@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/git ]]; then
+    if [[ ! -e /usr/local/bin/git ]]; then
         echo "clv is installing git"
-        cp "$SCRIPT_PATH/git" ~/.clv/bin/git
+        sudo cp "$SCRIPT_PATH/git" /usr/local/bin/git
+    fi
+elif [[ $1 == "clv-uninstall" ]]; then
+    if [[ -e /usr/local/bin/git ]]; then
+        echo "clv is uninstalling git"
+        sudo rm /usr/local/bin/git
     fi
 else
     source "$SCRIPT_PATH"/_ports

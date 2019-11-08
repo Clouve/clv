@@ -3,8 +3,12 @@
 # PORTS="3000 4000"
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/_ports ]]; then
-        cp "$SCRIPT_PATH/_ports" ~/.clv/bin/_ports
+    if [[ ! -e /usr/local/bin/_ports ]]; then
+        sudo cp "$SCRIPT_PATH/_ports" /usr/local/bin/_ports
+    fi
+elif [[ $1 == "clv-uninstall" ]]; then
+    if [[ -e /usr/local/bin/_ports ]]; then
+        sudo rm /usr/local/bin/_ports
     fi
 else
     PUBLISHED_PORTS=""

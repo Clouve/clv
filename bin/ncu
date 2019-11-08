@@ -1,19 +1,24 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/ncu ]]; then
+    if [[ ! -e /usr/local/bin/ncu ]]; then
         "$SCRIPT_PATH"/npm clv-install
-        if [[ -e ~/.clv/bin/npm ]]; then
+        if [[ -e /usr/local/bin/npm ]]; then
             echo "clv is installing ncu"
             npm i -g npm-check-updates
             if [[ -e ~/.clv/home/node/bin/ncu ]]; then
-                cp "$SCRIPT_PATH/ncu" ~/.clv/bin/ncu
+                sudo cp "$SCRIPT_PATH/ncu" /usr/local/bin/ncu
             else
                 echo "ncu didn't install properly"
             fi
         else
             echo "npm does not exist"
         fi
+    fi
+elif [[ $1 == "clv-uninstall" ]]; then
+    if [[ -e /usr/local/bin/ncu ]]; then
+        echo "clv is uninstalling ncu"
+        sudo rm /usr/local/bin/ncu
     fi
 else
     source "$SCRIPT_PATH"/_ports

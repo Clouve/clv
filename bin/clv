@@ -1,9 +1,14 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e ~/.clv/bin/clv ]]; then
+    if [[ ! -e /usr/local/bin/clv ]]; then
         echo "clv is installing clv"
-        cp "$SCRIPT_PATH/clv" ~/.clv/bin/clv
+        sudo cp "$SCRIPT_PATH/clv" /usr/local/bin/clv
+    fi
+elif [[ $1 == "clv-uninstall" ]]; then
+    if [[ -e /usr/local/bin/clv ]]; then
+        echo "clv is uninstalling clv"
+        sudo rm /usr/local/bin/clv
     fi
 else
     source "$SCRIPT_PATH"/_ports
