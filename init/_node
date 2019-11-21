@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+if [[ ! -d ~/.clv/home/node ]]; then
+    echo "clv is initializing node"
+    mkdir -p ~/.clv/home/node
+    docker run --rm \
+        -v "$HOME/.clv/home:/root" \
+        -v "$PWD:/clv" \
+        -w "/clv" \
+        node npm config set prefix "/root/node"
+fi
