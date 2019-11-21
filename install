@@ -4,14 +4,21 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # --- uninstall clv commands if any --- #
 "$SCRIPT_PATH"/uninstall bin
 
-# --- install clv --- #
+# --- prepare clv's home directory --- #
 mkdir -p ~/.clv
 if [[ -e ~/.clv.home.bak ]]; then
     echo "restoring clv's home directory"
     mv ~/.clv.home.bak ~/.clv/home
 fi
-for cmd in "$SCRIPT_PATH"/bin/*; do
-    "$cmd" clv-install
+
+# --- installing clv --- #
+sudo cp -r "$SCRIPT_PATH"/init /usr/local/bin/
+for CMD_PATH in "$SCRIPT_PATH"/bin/*; do
+    CMD=$(basename "$CMD_PATH")
+    if [[ ! -e "/usr/local/bin/$CMD" ]]; then
+        sudo cp "$SCRIPT_PATH/bin/$CMD" "/usr/local/bin/$CMD"
+        echo "clv installed $CMD successfully!"
+    fi
 done
 
 echo "clv has been installed successfully!"

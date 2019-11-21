@@ -1,30 +1,12 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-if [[ $1 == "clv-install" ]]; then
-    if [[ ! -e /usr/local/bin/node ]]; then
-        echo "clv is installing node"
-        docker run --rm \
-            -v "$HOME/.clv/home:/root" \
-            -v "$PWD:/clv" \
-            -w "/clv" \
-            node npm config set prefix "/root/node"
-        sudo cp "$SCRIPT_PATH/node" /usr/local/bin/node
-    fi
-elif [[ $1 == "clv-uninstall" ]]; then
-    if [[ -e /usr/local/bin/node ]]; then
-        echo "clv is uninstalling node"
-        sudo rm /usr/local/bin/node
-    fi
-else
-    source "$SCRIPT_PATH"/_ports
-    docker run -it --rm \
-        ${PUBLISHED_PORTS:-"--network=host"} \
-        --entrypoint "node" \
-        -e PATH="/root/node/bin:$PATH" \
-        -v "$HOME/.clv/home:/root" \
-        -v "$PWD:/clv" \
-        -w "/clv" \
-        -a STDOUT \
-        node "$@"
-fi
-
+source "$SCRIPT_PATH"/init/all
+docker run -it --rm \
+    ${PUBLISHED_PORTS:-"--network=host"} \
+    --entrypoint "node" \
+    -e PATH="/root/node/bin:$PATH" \
+    -v "$HOME/.clv/home:/root" \
+    -v "$PWD:/clv" \
+    -w "/clv" \
+    -a STDOUT \
+    node "$@"

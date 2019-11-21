@@ -1,25 +1,30 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
+uninstall_commands(){
+    for CMD_PATH in $@; do
+        CMD=$(basename "$CMD_PATH")
+        if [[ -e "/usr/local/bin/$CMD" ]]; then
+            sudo rm "/usr/local/bin/$CMD"
+            echo "clv uninstalled $CMD successfully!"
+        fi
+    done
+}
+
 if [[ $1 ]]; then
     if [[ $1 == "bin" ]]; then
-        for cmd in "$SCRIPT_PATH"/bin/*; do
-            "$cmd" clv-uninstall
-        done
-        echo "clv has uninstalled $1 successfully!"
+        uninstall_commands "$SCRIPT_PATH"/bin/*
     else
-        COMMANDS=( "$@" )
-        for cmd in "${COMMANDS[@]}"; do
-            "$SCRIPT_PATH/bin/$cmd" clv-uninstall
-            echo "clv has uninstalled $cmd command successfully!"
-        done
+        uninstall_commands $@
     fi
 else
-    for cmd in "$SCRIPT_PATH"/bin/*; do
-        "$cmd" clv-uninstall
-    done
+    uninstall_commands "$SCRIPT_PATH"/bin/*
+    if [[ -d /usr/local/bin/init ]]; then
+        sudo rm -r /usr/local/bin/init
+    fi
     if [[ -e ~/.clv/home ]]; then
         mv ~/.clv/home ~/.clv.home.bak
     fi
-    echo "clv has been fully uninstalled successfully!"
+    echo "clv has been uninstalled successfully!"
 fi
+echo "----------------------------------------------------------"

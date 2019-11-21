@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# EXAMPLE: prefix your command with the following to publish 3000 and 4000 ports
+# PORTS="3000 4000"
+PUBLISHED_PORTS=""
+for PORT in $PORTS; do
+    PUBLISHED_PORTS="$PUBLISHED_PORTS--publish=$PORT:$PORT "
+done
