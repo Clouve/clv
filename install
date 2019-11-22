@@ -12,6 +12,7 @@ if [[ -e ~/.clv.home.bak ]]; then
 fi
 
 # --- installing clv --- #
+sudo cp -r "$SCRIPT_PATH"/inc /usr/local/bin/
 sudo cp -r "$SCRIPT_PATH"/init /usr/local/bin/
 for CMD_PATH in "$SCRIPT_PATH"/bin/*; do
     CMD=$(basename "$CMD_PATH")

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+if [[ ! -e ~/.clv/home/node/bin/ncu ]]; then
+    echo "clv is initializing ncu"
+    npm i -g npm-check-updates
+fi

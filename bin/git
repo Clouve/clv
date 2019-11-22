@@ -1,8 +1,6 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-"$SCRIPT_PATH"/init/all
 docker run -it --rm \
-    ${PUBLISHED_PORTS:-"--network=host"} \
     --entrypoint "git" \
     -v "$HOME/.clv/home:/root" \
     -v "$PWD:/clv" \

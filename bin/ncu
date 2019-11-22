@@ -1,15 +1,7 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-"$SCRIPT_PATH"/init/all
-
-if [[ ! -e ~/.clv/home/node/bin/ncu ]]; then
-    echo "clv is initializing ncu"
-    npm i -g npm-check-updates
-fi
-
-"$SCRIPT_PATH"/_ports
+"$SCRIPT_PATH"/init/ncu
 docker run -it --rm \
-    ${PUBLISHED_PORTS:-"--network=host"} \
     --entrypoint "ncu" \
     -e PATH="/root/node/bin:$PATH" \
     -v "$HOME/.clv/home:/root" \
