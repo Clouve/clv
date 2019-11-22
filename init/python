@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 if [[ ! -d ~/.clv/home/python ]]; then
     echo "clv is initializing python"
-    sudo mkdir -p ~/.clv/home/python
+    mkdir -p ~/.clv/home/python
 fi

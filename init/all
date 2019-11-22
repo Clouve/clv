@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-for INIT_PATH in "$SCRIPT_PATH"/*; do
-    INIT=$(basename "$INIT_PATH")
-    if [[ "$INIT" == _* ]]; then
-        source "$INIT_PATH"
-    fi
-done
