@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-"$SCRIPT_PATH"/init/node ncu npm-check-updates
+"$SCRIPT_PATH"/init/node prettier
 docker run -it --rm \
-    --entrypoint "ncu" \
+    --entrypoint "prettier" \
     -e PATH="/root/node/bin:$PATH" \
     -v "$HOME/.clv/home:/root" \
     -v "$PWD:/clv" \
