@@ -29,7 +29,7 @@ For example, the following command will publish 8080 and 5432 ports:
 
 ### Uninstall
 
-`https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash`
 
 ### Uninstall a specific command
 
