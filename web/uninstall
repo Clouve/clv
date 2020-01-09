@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+wget https://github.com/Clouve/clv/archive/master.zip
+unzip master.zip
+./clv-master/uninstall
+rm -rf clv-master master.zip
