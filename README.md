@@ -25,16 +25,16 @@ For example, the following command will publish 8080 and 5432 ports:
 
 ### Install
 
-`bash <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install)`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash`
 
 ### Uninstall
 
-`bash <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall)`
+`https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash`
 
 ### Uninstall a specific command
 
-`bash -s [COMMAND] <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall)`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s [COMMAND]`
 
 For example, the following command will uninstall git command:
 
-`bash -s git <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall)`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s git`
