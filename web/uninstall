@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 curl -o clv.zip https://codeload.github.com/Clouve/clv/zip/master
 unzip clv.zip
-./clv-master/uninstall
+./clv-master/uninstall $@
 rm -rf clv-master clv.zip

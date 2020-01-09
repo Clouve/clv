@@ -22,3 +22,19 @@ To expose container ports, just add PORTS as an environment variable. For exampl
 For example, the following command will publish 8080 and 5432 ports:
 
 `PORTS="8080 5432" npm start`
+
+### Install
+
+`bash <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install)`
+
+### Uninstall
+
+`bash <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall)`
+
+### Uninstall a specific command
+
+`bash -s [COMMAND] <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall)`
+
+For example, the following command will uninstall git command:
+
+`bash -s git <(curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall)`
