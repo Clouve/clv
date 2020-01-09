@@ -1,43 +1,34 @@
 #!/usr/bin/env bash
-if [[ -t 0 ]]; then TTY="yes"; fi
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-if [[ "$TTY" == "yes" ]]; then
-    SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-
-    uninstall_commands(){
-        for CMD_PATH in $@; do
-            CMD=$(basename "$CMD_PATH")
-            if [[ -e "/usr/local/bin/$CMD" ]]; then
-                sudo rm "/usr/local/bin/$CMD"
-                echo "clv uninstalled $CMD successfully!"
-            fi
-        done
-    }
-
-    if [[ $1 ]]; then
-        if [[ $1 == "bin" ]]; then
-            uninstall_commands "$SCRIPT_PATH"/bin/*
-        else
-            uninstall_commands $@
+uninstall_commands(){
+    for CMD_PATH in $@; do
+        CMD=$(basename "$CMD_PATH")
+        if [[ -e "/usr/local/bin/$CMD" ]]; then
+            sudo rm "/usr/local/bin/$CMD"
+            echo "clv uninstalled $CMD successfully!"
         fi
-    else
+    done
+}
+
+if [[ $1 ]]; then
+    if [[ $1 == "bin" ]]; then
         uninstall_commands "$SCRIPT_PATH"/bin/*
-        if [[ -d /usr/local/bin/inc ]]; then
-            sudo rm -r /usr/local/bin/inc
-        fi
-        if [[ -d /usr/local/bin/init ]]; then
-            sudo rm -r /usr/local/bin/init
-        fi
-        if [[ -e ~/.clv/home ]]; then
-            sudo mv ~/.clv/home ~/.clv.home.bak
-        fi
-        rm -rf ~/.clv
-        echo "clv has been uninstalled successfully!"
+    else
+        uninstall_commands $@
     fi
-    echo "----------------------------------------------------------"
 else
-    wget https://github.com/Clouve/clv/archive/master.zip
-    unzip master.zip
-    ./clv-master/uninstall
-    rm -rf clv-master master.zip
+    uninstall_commands "$SCRIPT_PATH"/bin/*
+    if [[ -d /usr/local/bin/inc ]]; then
+        sudo rm -r /usr/local/bin/inc
+    fi
+    if [[ -d /usr/local/bin/init ]]; then
+        sudo rm -r /usr/local/bin/init
+    fi
+    if [[ -e ~/.clv/home ]]; then
+        sudo mv ~/.clv/home ~/.clv.home.bak
+    fi
+    rm -rf ~/.clv
+    echo "clv has been uninstalled successfully!"
 fi
+echo "----------------------------------------------------------"
