@@ -2,8 +2,9 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 "$SCRIPT_PATH"/init/node
 "$SCRIPT_PATH"/init/python
+source "$SCRIPT_PATH"/inc/tty
 source "$SCRIPT_PATH"/inc/ports
-docker run -it --rm \
+docker run "$IT" --rm \
     ${PUBLISHED_PORTS:-"--network=host"} \
     -e PYTHONUSERBASE="/root/python" \
     -e PATH="/root/node/bin:$PATH" \

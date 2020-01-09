@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 "$SCRIPT_PATH"/init/node
+source "$SCRIPT_PATH"/inc/tty
 source "$SCRIPT_PATH"/inc/ports
-docker run -it --rm \
+docker run "$IT" --rm \
     ${PUBLISHED_PORTS:-"--network=host"} \
     --entrypoint "node" \
     -e PATH="/root/node/bin:$PATH" \

@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 "$SCRIPT_PATH"/init/node prettier
-docker run -it --rm \
+source "$SCRIPT_PATH"/inc/tty
+docker run "$IT" --rm \
     --entrypoint "prettier" \
     -e PATH="/root/node/bin:$PATH" \
     -v "$HOME/.clv/home:/root" \

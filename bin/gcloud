@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
-docker run -it --rm \
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+source "$SCRIPT_PATH"/inc/tty
+docker run "$IT" --rm \
     --entrypoint "gcloud" \
     -v "$HOME/.clv/home/gcloud:/root/.config/gcloud" \
     -v "$HOME/.clv/home:/root" \
