@@ -1,11 +1,11 @@
 # clv
 ## Shell commands wrapped in docker images
 
-clv commands are executed through docker images and transient containers. Each executed command instantiates a transient container by mapping its home directory to a local one (~/.clv/home). The container never persists, however, the home directory containing all the settings persists across executions.
+Shell commands executed through docker images and transient containers. Each executed command instantiates a transient container by mapping its home directory to a local one (~/.clv/home). The container never persists, however, the home directory containing all the settings persists across executions.
 
 ### Available commands are:
 
-- clv (will run any docker image using the same setup)
+- clv (a generic command that will run any docker image using the same setup)
 - gcloud (https://cloud.google.com/sdk/gcloud/reference/)
 - git (https://git-scm.com/docs)
 - ncu (https://www.npmjs.com/package/npm-check-updates)
