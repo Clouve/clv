@@ -5,13 +5,15 @@ clv commands are executed through docker images and transient containers. Each e
 
 ### Available commands are:
 
-- git
-- node
-- npm
-- ncu (npm-check-updates)
-- python
-- python2
 - clv (will run any docker image using the same setup)
+- gcloud (https://cloud.google.com/sdk/gcloud/reference/)
+- git (https://git-scm.com/docs)
+- ncu (https://www.npmjs.com/package/npm-check-updates)
+- node (https://nodejs.org/api/cli.html)
+- npm (https://docs.npmjs.com/cli-documentation/cli)
+- prettier (https://prettier.io/docs/en/cli.html)
+- python (https://docs.python.org/3/)
+- python2 (https://docs.python.org/2/)
 
 To expose container ports, just add PORTS as an environment variable. For example:
 
