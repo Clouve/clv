@@ -3,12 +3,11 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 "$SCRIPT_PATH"/init/node
 source "$SCRIPT_PATH"/inc/tty
 source "$SCRIPT_PATH"/inc/ports
-docker run "$IT" --rm \
+docker run "$IT" --rm -a STDOUT \
     ${PUBLISHED_PORTS:-"--network=host"} \
     --entrypoint "node" \
     -e PATH="/root/node/bin:$PATH" \
     -v "$HOME/.clv/home:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    -a STDOUT \
     node "$@"

@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 source "$SCRIPT_PATH"/inc/tty
-docker run "$IT" --rm \
+docker run "$IT" --rm -a STDOUT \
     --entrypoint "gcloud" \
     -v "$HOME/.clv/home/gcloud:/root/.config/gcloud" \
     -v "$HOME/.clv/home:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    -a STDOUT \
     google/cloud-sdk "$@"

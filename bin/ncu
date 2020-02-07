@@ -2,11 +2,10 @@
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 "$SCRIPT_PATH"/init/node ncu npm-check-updates
 source "$SCRIPT_PATH"/inc/tty
-docker run "$IT" --rm \
+docker run "$IT" --rm -a STDOUT \
     --entrypoint "ncu" \
     -e PATH="/root/node/bin:$PATH" \
     -v "$HOME/.clv/home:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    -a STDOUT \
     node "$@"
