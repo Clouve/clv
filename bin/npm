@@ -1,13 +1,12 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-"$SCRIPT_PATH"/init/node
-source "$SCRIPT_PATH"/inc/tty
+source "$SCRIPT_PATH"/init/clv node
 source "$SCRIPT_PATH"/inc/ports
 docker run "$IT" --rm -a STDOUT \
-    ${PUBLISHED_PORTS:-"--network=host"} \
+    "${PUBLISHED_PORTS[@]}" \
     --entrypoint "npm" \
     -e PATH="/root/node/bin:$PATH" \
-    -v "$HOME/.clv/home:/root" \
+    -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
     node "$@"

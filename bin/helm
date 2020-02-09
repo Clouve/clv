@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-source "$SCRIPT_PATH"/init/clv node prettier
+source "$SCRIPT_PATH"/init/clv alpine/helm
 docker run "$IT" --rm -a STDOUT \
-    --entrypoint "prettier" \
-    -e PATH="/root/node/bin:$PATH" \
+    --entrypoint "helm" \
+    -v "$CLVHOME/.config:/root/.config" \
     -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    node "$@"
+    alpine/helm "$@"

@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# expects [IMAGE] [PARAMETERS...]
+set -e
+if [[ -t 0 ]]; then IT="-it"; else IT="-i"; fi
+if [[ ! -d ~/.clv ]]; then
+  mkdir -p ~/.clv
+fi
+CLV="$HOME/.clv"
+CLVHOME="$CLV/home"
+CLVINIT="$HOME/.clv/.init"
+if [[ ! -f "$CLVINIT" ]]; then
+  touch "$CLVINIT"
+fi
+IMAGE=$1; shift
+if ! grep -Fxq "$IMAGE" "$CLVINIT"; then
+  if [[ -f "$SCRIPT_PATH/init/$IMAGE" ]]; then
+    echo "clv is initializing $IMAGE"
+    source "$SCRIPT_PATH/init/$IMAGE" "$@"
+    echo "$IMAGE" >> "$CLVINIT"
+  fi
+fi
