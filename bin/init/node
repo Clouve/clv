@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+if [[ ! -d "$CLVHOME/node" ]]; then
+  mkdir -p "$CLVHOME/node"
+  docker run --rm \
+    -v "$CLVHOME:/root" \
+    -v "$PWD:/clv" \
+    -w "/clv" \
+    node npm config set prefix "/root/node"
+fi
+
+if [[ $1 ]]; then
+  # if ncu does not exist, install it
+  if [[ ! -e "$CLVHOME/node/bin/$1" ]]; then
+    echo "clv is installing $1"
+    if [[ $2 ]]; then
+      npm i -g "$2"
+    else
+      npm i -g "$1"
+    fi
+  fi
+fi

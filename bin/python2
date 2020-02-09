@@ -1,14 +1,12 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-"$SCRIPT_PATH"/init/python
-source "$SCRIPT_PATH"/inc/tty
+source "$SCRIPT_PATH"/init/clv python
 source "$SCRIPT_PATH"/inc/ports
-docker run "$IT" --rm \
-    ${PUBLISHED_PORTS:-"--network=host"} \
+docker run "$IT" --rm -a STDOUT \
+    "${PUBLISHED_PORTS[@]}" \
     --entrypoint "python2" \
     -e PYTHONUSERBASE="/root/python" \
-    -v "$HOME/.clv/home:/root" \
+    -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    -a STDOUT \
     python "$@"
