@@ -11,11 +11,12 @@ CLVINIT="$HOME/.clv/.init"
 if [[ ! -f "$CLVINIT" ]]; then
   touch "$CLVINIT"
 fi
+INIT_PARAMS="$@"
 IMAGE=$1; shift
-if ! grep -Fxq "$IMAGE" "$CLVINIT"; then
+if ! grep -q "^$INIT_PARAMS$" "$CLVINIT"; then
   if [[ -f "$SCRIPT_PATH/init/$IMAGE" ]]; then
-    echo "clv is initializing $IMAGE"
+    echo "clv is initializing $INIT_PARAMS"
     source "$SCRIPT_PATH/init/$IMAGE" "$@"
-    echo "$IMAGE" >> "$CLVINIT"
+    echo "$INIT_PARAMS" >> "$CLVINIT"
   fi
 fi

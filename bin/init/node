@@ -9,13 +9,11 @@ if [[ ! -d "$CLVHOME/node" ]]; then
 fi
 
 if [[ $1 ]]; then
-  # if ncu does not exist, install it
-  if [[ ! -e "$CLVHOME/node/bin/$1" ]]; then
+  if [[ $2 ]]; then
+    echo "clv is installing $2"
+    npm i -g "$2"
+  else
     echo "clv is installing $1"
-    if [[ $2 ]]; then
-      npm i -g "$2"
-    else
-      npm i -g "$1"
-    fi
+    npm i -g "$1"
   fi
 fi
