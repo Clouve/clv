@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 # this is needed because PYTHONUSERBASE environment variable maps to this location
 if [[ ! -d ~/.clv/home/python ]]; then
-    echo "clv is initializing python"
     mkdir -p ~/.clv/home/python
 fi
