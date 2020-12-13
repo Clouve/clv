@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 if [[ ! -d "$CLVHOME/node" ]]; then
   mkdir -p "$CLVHOME/node"
+  mkdir -p "$CLVHOME/node/lib"
   docker run --rm \
     -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
