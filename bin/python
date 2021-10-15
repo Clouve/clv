@@ -5,7 +5,7 @@ source "$SCRIPT_PATH"/inc/ports
 docker run "$IT" --rm -a STDOUT \
     "${PUBLISHED_PORTS[@]}" \
     --entrypoint "python" \
-    -e PYTHONUSERBASE="/root/python" \
+    -e PYTHONUSERBASE="/root/base" \
     -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \

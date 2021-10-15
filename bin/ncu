@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-source "$SCRIPT_PATH"/init/clv node ncu npm-check-updates
+source "$SCRIPT_PATH"/init/clv ncu
 docker run "$IT" --rm -a STDOUT \
     --entrypoint "ncu" \
-    -e PATH="/root/node/bin:$PATH" \
-    -v "$CLVHOME:/root" \
+    -e PATH="/root/bin:$PATH" \
+    -v "$CLVHOME/../node:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
     node "$@"

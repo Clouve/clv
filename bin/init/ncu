@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+echo "clv is installing npm-check-updates"
+npm i -g npm-check-updates
