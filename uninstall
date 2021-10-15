@@ -25,10 +25,6 @@ else
     if [[ -d /usr/local/bin/init ]]; then
         sudo rm -r /usr/local/bin/init
     fi
-    if [[ -e ~/.clv/home ]]; then
-        sudo mv ~/.clv/home ~/.clv.home.bak
-    fi
-    rm -rf ~/.clv
     echo "clv has been uninstalled successfully!"
 fi
 echo "----------------------------------------------------------"

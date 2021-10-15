@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+if [[ ! -d "$CLVHOME/.config" ]]; then
+  mkdir -p "$CLVHOME/.config"
+fi
+if [[ ! -d "$CLVHOME/.kube" ]]; then
+  mkdir -p "$CLVHOME/.kube"
+fi
