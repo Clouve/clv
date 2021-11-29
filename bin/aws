@@ -1,10 +1,8 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
-source "$SCRIPT_PATH"/init/clv ncu
+source "$SCRIPT_PATH"/init/clv amazon/aws-cli
 docker run "$IT" --rm -a STDOUT \
-    --entrypoint "ncu" \
-    -e PATH="/root/bin:$PATH" \
-    -v "$CLVHOME/../node:/root" \
+    -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    node "$@"
+    amazon/aws-cli "$@"

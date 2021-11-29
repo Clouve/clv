@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+source "$SCRIPT_PATH"/init/clv mcr.microsoft.com/azure-cli
+docker run "$IT" --rm -a STDOUT \
+    --entrypoint "az" \
+    -v "$CLVHOME:/root" \
+    -v "$PWD:/clv" \
+    -w "/clv" \
+    mcr.microsoft.com/azure-cli "$@"

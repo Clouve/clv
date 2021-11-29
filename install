@@ -4,13 +4,6 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 # --- uninstall clv commands if any --- #
 "$SCRIPT_PATH"/uninstall bin
 
-# --- prepare clv's home directory --- #
-mkdir -p ~/.clv
-if [[ -e ~/.clv.home.bak ]]; then
-    echo "restoring clv's home directory"
-    mv ~/.clv.home.bak ~/.clv/home
-fi
-
 # --- installing clv --- #
 sudo cp -r "$SCRIPT_PATH"/bin/inc /usr/local/bin/
 sudo cp -r "$SCRIPT_PATH"/bin/init /usr/local/bin/

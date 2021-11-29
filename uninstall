@@ -5,30 +5,27 @@ uninstall_commands(){
     for CMD_PATH in $@; do
         CMD=$(basename "$CMD_PATH")
         if [[ -e "/usr/local/bin/$CMD" ]]; then
+          if [[ ! -d "/usr/local/bin/$CMD" ]]; then
             sudo rm "/usr/local/bin/$CMD"
             echo "clv uninstalled $CMD successfully!"
+          fi
         fi
     done
 }
 
 if [[ $1 ]]; then
-    if [[ $1 == "bin" ]]; then
-        uninstall_commands "$SCRIPT_PATH"/bin/*
-    else
-        uninstall_commands $@
-    fi
+    uninstall_commands $@
 else
     uninstall_commands "$SCRIPT_PATH"/bin/*
     if [[ -d /usr/local/bin/inc ]]; then
-        sudo rm -r /usr/local/bin/inc
+        sudo rm -rf /usr/local/bin/inc
     fi
     if [[ -d /usr/local/bin/init ]]; then
-        sudo rm -r /usr/local/bin/init
+        sudo rm -rf /usr/local/bin/init
     fi
-    if [[ -e ~/.clv/home ]]; then
-        sudo mv ~/.clv/home ~/.clv.home.bak
+    if [[ -e "$HOME/.clv/.init" ]]; then
+        sudo rm "$HOME/.clv/.init"
     fi
-    rm -rf ~/.clv
     echo "clv has been uninstalled successfully!"
 fi
 echo "----------------------------------------------------------"

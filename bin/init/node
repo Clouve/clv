@@ -1,20 +1,12 @@
 #!/usr/bin/env bash
-if [[ ! -d "$CLVHOME/node" ]]; then
-  mkdir -p "$CLVHOME/node"
-  mkdir -p "$CLVHOME/node/lib"
-  docker run --rm \
-    -v "$CLVHOME:/root" \
+if [[ ! -d "$CLVHOME/../node/lib" ]]; then
+  mkdir -p "$CLVHOME/../node/lib"
+fi
+if [[ ! -d "$CLVHOME/../node/bin" ]]; then
+  mkdir -p "$CLVHOME/../node/bin"
+fi
+docker run --rm \
+    -v "$CLVHOME/../node:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
-    node npm config set prefix "/root/node"
-fi
-
-if [[ $1 ]]; then
-  if [[ $2 ]]; then
-    echo "clv is installing $2"
-    npm i -g "$2"
-  else
-    echo "clv is installing $1"
-    npm i -g "$1"
-  fi
-fi
+    node npm config set prefix "/root"

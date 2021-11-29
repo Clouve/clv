@@ -5,7 +5,7 @@ source "$SCRIPT_PATH"/inc/ports
 docker run "$IT" --rm -a STDOUT \
     "${PUBLISHED_PORTS[@]}" \
     --entrypoint "node" \
-    -e PATH="/root/node/bin:$PATH" \
+    -e PATH="/root/bin:$PATH" \
     -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
