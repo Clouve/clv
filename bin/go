@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+source "$SCRIPT_PATH"/init/clv go
+source "$SCRIPT_PATH"/inc/ports
+docker run "$IT" --rm -a STDOUT \
+    "${PUBLISHED_PORTS[@]}" \
+    --entrypoint "go" \
+    -v "$CLVHOME:/root" \
+    -v "$PWD:/clv" \
+    -w "/clv" \
+    golang "$@"
