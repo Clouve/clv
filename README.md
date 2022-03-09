@@ -5,9 +5,12 @@ Shell commands executed through docker images and transient containers. Each exe
 
 ### Available commands are:
 
-- clv (a generic command that will run any docker image using the same setup)
+- aws (https://aws.amazon.com/cli/)
+- az (https://docs.microsoft.com/en-us/cli/azure/)
 - gcloud (https://cloud.google.com/sdk/gcloud/reference/)
 - git (https://git-scm.com/docs)
+- go (https://pkg.go.dev/cmd/go)
+- helm (https://helm.sh/docs/helm)
 - ncu (https://www.npmjs.com/package/npm-check-updates)
 - node (https://nodejs.org/api/cli.html)
 - npm (https://docs.npmjs.com/cli-documentation/cli)
