@@ -36,11 +36,11 @@ Example 1: To install all commands:
 
 Example 2: To install only specific commands like go and node:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s go node`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- go node`
 
 Example 3: To install all but specific commands like git and python2:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s --skip git python2`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- --skip git python2`
 
 ### Uninstall
 
@@ -52,4 +52,4 @@ Example 1: To uninstall all commands:
 
 Example 2: To uninstall only specific commands like git and python2:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s git python2`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s -- git python2`
