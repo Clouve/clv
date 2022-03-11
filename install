@@ -1,51 +1,70 @@
 #!/usr/bin/env bash
 SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 
-# --- uninstall clv commands if any --- #
-"$SCRIPT_PATH"/uninstall bin
-sudo cp -r "$SCRIPT_PATH"/bin/inc /usr/local/bin/
-sudo cp -r "$SCRIPT_PATH"/bin/init /usr/local/bin/
+function install () {
+  INSTALL_TYPE=$1;shift
+  CMD_LIST="$@"
+  # --- uninstall clv commands if any --- #
+  "$SCRIPT_PATH"/uninstall bin
+  sudo cp -r "$SCRIPT_PATH"/bin/inc /usr/local/bin/
+  sudo cp -r "$SCRIPT_PATH"/bin/init /usr/local/bin/
 
-if [[ $1 ]]; then
-  #identify args
-  for i in "$@"; do
-    case $i in
-      -s=*|--skip=*)
-        SKIP_LIST="${i#*=}"
-        echo "skipping $SKIP_LIST commands"
-        shift
-        ;;
-      -*|--*)
-        echo "Unknown option $i"
-        exit 1
-        ;;
-      *)
-        ;;
+  for CMD_PATH in "$SCRIPT_PATH"/bin/*; do
+    CMD=$(basename "$CMD_PATH")
+    case "$INSTALL_TYPE" in
+       "all")
+          if [[ ! -e "/usr/local/bin/$CMD" ]]; then
+            sudo cp "$SCRIPT_PATH/bin/$CMD" "/usr/local/bin/$CMD"
+            echo "clv installed $CMD successfully!"
+          fi
+          ;;
+       "skip")
+          if [[ ! " ${CMD_LIST[*]} " =~ " ${CMD} " ]]; then
+            if [[ ! -e "/usr/local/bin/$CMD" ]]; then
+              sudo cp "$SCRIPT_PATH/bin/$CMD" "/usr/local/bin/$CMD"
+              echo "clv installed $CMD successfully!"
+            fi
+          else
+            echo "clv skipped $CMD"
+          fi
+          ;;
+       "commands")
+          if [[ " ${CMD_LIST[*]} " =~ " ${CMD} " ]]; then
+            if [[ ! -e "/usr/local/bin/$CMD" ]]; then
+              sudo cp "$SCRIPT_PATH/bin/$CMD" "/usr/local/bin/$CMD"
+              echo "clv installed $CMD successfully!"
+            fi
+          else
+            echo "clv skipped $CMD"
+          fi
+          ;;
     esac
   done
-  IFS=', ' read -r -a SKIP_COMMANDS <<< "$SKIP_LIST"
-  for CMD_PATH in "$SCRIPT_PATH"/bin/*; do
-    CMD=$(basename "$CMD_PATH")
-    if [[ ! " ${SKIP_COMMANDS[*]} " =~ " ${CMD} " ]]; then
-      if [[ ! -e "/usr/local/bin/$CMD" ]]; then
-        sudo cp "$SCRIPT_PATH/bin/$CMD" "/usr/local/bin/$CMD"
-        echo "clv installed $CMD successfully!"
-      fi
-    else
-      echo "clv skipped $CMD"
-    fi
-  done
-  CMD=test
-else
-  # --- installing clv commands --- #
-  echo "installing all commands"
-  for CMD_PATH in "$SCRIPT_PATH"/bin/*; do
-    CMD=$(basename "$CMD_PATH")
-    if [[ ! -e "/usr/local/bin/$CMD" ]]; then
-      sudo cp "$SCRIPT_PATH/bin/$CMD" "/usr/local/bin/$CMD"
-      echo "clv installed $CMD successfully!"
-    fi
-  done
-fi
+  echo "clv has been installed successfully!"
+}
 
-echo "clv has been installed successfully!"
+# --- install clv commands --- #
+if [[ $1 ]]; then
+  if [[ $1 == "-h" || $1 == "--help" ]]; then
+    echo "USAGE: ./install [-s|--skip|-h|--help] [cmd1 cmd2 ...]"
+    echo "Example 1: to install all commands"
+    echo "./install"
+    echo "Example 2: to install go and node commands only"
+    echo "./install go node"
+    echo "Example 3: to install all but git and python2 commands"
+    echo "./install --skip git python2"
+    echo "./install -s git python2"
+  elif [[ $1 == "-s" || $1 == "--skip" ]]; then
+    shift
+    CMD_LIST="$@"
+    echo "skipping $CMD_LIST command(s)"
+    install skip "${CMD_LIST[@]}"
+  else
+    CMD_LIST="$@"
+    echo "installing $CMD_LIST command(s)"
+    install commands "${CMD_LIST[@]}"
+  fi
+else
+  echo "installing all commands"
+  install all
+fi

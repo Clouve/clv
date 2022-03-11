@@ -14,7 +14,15 @@ uninstall_commands(){
 }
 
 if [[ $1 ]]; then
+  if [[ $1 == "-h" || $1 == "--help" ]]; then
+    echo "USAGE: ./uninstall [cmd1 cmd2 ...]"
+    echo "Example 1: to uninstall all commands"
+    echo "./uninstall"
+    echo "Example 2: to uninstall git and python2 commands only"
+    echo "./uninstall git python2"
+  else
     uninstall_commands $@
+  fi
 else
     uninstall_commands "$SCRIPT_PATH"/bin/*
     if [[ -d /usr/local/bin/inc ]]; then
