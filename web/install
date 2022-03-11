@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-curl -o clv.zip https://codeload.github.com/Clouve/clv/zip/master?"$(date +%s)"
+curl -H 'Cache-Control: no-cache' -o clv.zip https://codeload.github.com/Clouve/clv/zip/master?"$(date +%s)"
 unzip clv.zip
-./clv-master/install
+./clv-master/install $@
 rm -rf clv-master clv.zip
