@@ -3,8 +3,6 @@ SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
 source "$SCRIPT_PATH"/init/clv google/cloud-sdk
 docker run "$IT" --rm -a STDOUT \
     --entrypoint "gcloud" \
-    -v "$CLVHOME/.config:/root/.config" \
-    -v "$CLVHOME/.kube:/root/.kube" \
     -v "$CLVHOME:/root" \
     -v "$PWD:/clv" \
     -w "/clv" \
