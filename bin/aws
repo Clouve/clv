@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$(
+  cd "$(dirname "$0")" || exit
+  pwd -P
+)"
 source "$SCRIPT_PATH"/init/clv amazon/aws-cli
 docker run "$IT" --rm -a STDOUT \
     -v "$CLVHOME:/root" \

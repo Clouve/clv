@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
-SCRIPT_PATH="$( cd "$(dirname "$0")" ; pwd -P )"
+SCRIPT_PATH="$(
+  cd "$(dirname "$0")" || exit
+  pwd -P
+)"
 source "$SCRIPT_PATH"/init/clv python
 source "$SCRIPT_PATH"/inc/ports
 docker run "$IT" --rm -a STDOUT \
