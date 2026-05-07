@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
-curl -H 'Cache-Control: no-cache' -o clv.zip https://codeload.github.com/Clouve/clv/zip/master?"$(date +%s)"
-unzip clv.zip
-./clv-master/install $@
-rm -rf clv-master clv.zip
+set -e
+BRANCH="${CLV_BRANCH:-main}"
+TS="$(date +%s)"
+curl -fsSL -H 'Cache-Control: no-cache' -o clv.zip \
+  "https://codeload.github.com/Clouve/clv/zip/${BRANCH}?${TS}"
+unzip -q clv.zip
+"./clv-${BRANCH}/install" "$@"
+rm -rf "clv-${BRANCH}" clv.zip
