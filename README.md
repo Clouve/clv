@@ -16,7 +16,6 @@ Shell commands executed through docker images and transient containers. Each exe
 - npm (https://docs.npmjs.com/cli-documentation/cli)
 - prettier (https://prettier.io/docs/en/cli.html)
 - python (https://docs.python.org/3/)
-- python2 (https://docs.python.org/2/)
 
 To expose container ports, just add PORTS as an environment variable. For example:
 
@@ -38,9 +37,9 @@ Example 2: To install only specific commands like go and node:
 
 `curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- go node`
 
-Example 3: To install all but specific commands like git and python2:
+Example 3: To install all but specific commands like git and python:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- --skip git python2`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- --skip git python`
 
 ### Uninstall
 
@@ -50,6 +49,6 @@ Example 1: To uninstall all commands:
 
 `curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash`
 
-Example 2: To uninstall only specific commands like git and python2:
+Example 2: To uninstall only specific commands like git and python:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s -- git python2`
+`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s -- git python`
