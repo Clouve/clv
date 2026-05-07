@@ -1,3 +1,12 @@
 #!/usr/bin/env bash
 echo "clv is installing prettier"
-npm i -g prettier
+mkdir -p "$CLV/node/lib" "$CLV/node/bin"
+docker run --rm \
+    -v "$CLV/node:/root" \
+    "node:${CLV_TAG:-lts}" \
+    npm config set prefix /root
+docker run --rm \
+    -v "$CLV/node:/root" \
+    -e PATH="/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+    "node:${CLV_TAG:-lts}" \
+    npm i -g prettier
