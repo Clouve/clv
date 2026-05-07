@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-# this is needed because PYTHONUSERBASE environment variable maps to this location
-if [[ ! -d "$CLVHOME/base" ]]; then
-    mkdir -p "$CLVHOME/base"
-fi
