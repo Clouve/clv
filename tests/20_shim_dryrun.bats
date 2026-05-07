@@ -99,3 +99,15 @@ setup() {
   [ "$status" -eq 0 ]
   [[ "$output" == *"node:20"* ]]
 }
+
+@test "gcloud defaults to the slim image variant" {
+  CLV_DRY_RUN=1 run "$REPO_ROOT/bin/gcloud" --version
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"google/cloud-sdk:slim"* ]]
+}
+
+@test "CLV_TAG override changes the gcloud image tag" {
+  CLV_TAG=alpine CLV_DRY_RUN=1 run "$REPO_ROOT/bin/gcloud" --version
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"google/cloud-sdk:alpine"* ]]
+}
