@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is
 
-`clv` ships thin Bash shims that wrap CLI tools (aws, az, gcloud, git, go, helm, ncu, node, npm, prettier, python) so each invocation runs inside a transient Docker container. There is nothing to build or compile — installation copies the shim scripts into `/usr/local/bin/`.
+`clv` ships thin Bash shims that wrap CLI tools (aws, az, clv, gcloud, git, go, helm, ncu, node, npm, prettier, python, terraform, kubectl, yarn, pnpm, bun, deno, cargo, psql, mysql, redis-cli, make) so each invocation runs inside a transient Docker container. There is nothing to build or compile — installation copies the shim scripts into `/usr/local/bin/`.
 
 ## Architecture
 
@@ -12,7 +12,11 @@ Three layers, all under [bin/](bin/):
 
 1. **Command shims** — [bin/aws](bin/aws), [bin/gcloud](bin/gcloud), [bin/node](bin/node), etc. One file per exposed CLI. Each shim sources its init script, optionally sources [bin/inc/ports](bin/inc/ports), then `docker run --rm` the appropriate image with `$@` forwarded.
 2. **Init layer** — [bin/init/clv](bin/init/clv) is the dispatcher every shim sources first. It ensures `~/.clv/` exists, sets `CLVHOME=$HOME/.clv/<cmd>`, and runs a one-time per-image init from [bin/init/](bin/init/) (e.g. [bin/init/node](bin/init/node), [bin/init/python](bin/init/python)) — recording completion in `~/.clv/.init` so it doesn't re-run.
-3. **Includes** — [bin/inc/ports](bin/inc/ports) reads `$PORTS` (space-separated) and emits `--publish=…` flags into `${PUBLISHED_PORTS[@]}`. If unset, defaults to `--network=host`. Only sourced by shims that need port publishing (node, npm, go, python, etc.).
+3. **Includes** — sourced by shims after `init/clv`:
+   - [bin/inc/docker](bin/inc/docker) defines `clv_docker_run`, the single docker-run dispatcher honored by every shim. Honors `CLV_DRY_RUN=1` (print and exit) and `CLV_DOCKER_ARGS` (extra flags).
+   - [bin/inc/ports](bin/inc/ports) translates the `PORTS` env into `--publish=…` flags, falling back to `--network=host`.
+   - [bin/inc/ssh](bin/inc/ssh) forwards `$SSH_AUTH_SOCK`, `~/.ssh`, and `~/.gitconfig` into the container (only `git` uses this today).
+   - [bin/inc/user](bin/inc/user) opt-in `--user $(id -u):$(id -g)` mapping when `CLV_MAP_USER=1`.
 
 ### Persistence model
 
@@ -54,3 +58,12 @@ Inside a shim script, after sourcing `init/clv`, these are available:
 - `$IT` — `-it` if stdin is a TTY, else `-i`
 - `$SCRIPT_PATH` — directory containing the shim (so `init/` and `inc/` paths resolve)
 - `$PUBLISHED_PORTS[@]` — only after sourcing `inc/ports`; expands to `--publish=…` flags or `--network=host`
+
+## Environment contract for users
+
+Any shim respects:
+- `CLV_TAG` — override the default image tag (e.g. `CLV_TAG=20 node …` for node:20)
+- `CLV_DRY_RUN=1` — print the docker command and exit instead of executing
+- `CLV_DOCKER_ARGS` — extra flags spliced into `docker run` (e.g. `--memory=2g`)
+- `CLV_MAP_USER=1` — run as host UID/GID (Linux file-ownership fix)
+- `PORTS` — space-separated; bare numbers expand to `host:host`, colon-form passes through
