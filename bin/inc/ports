@@ -6,6 +6,7 @@
 # If unset/empty, falls back to --network=host (Linux only — on Docker
 # Desktop for Mac/Windows host networking is bridge by default).
 PUBLISHED_PORTS=()
+# shellcheck disable=SC2153  # PORTS is set externally by the user
 for PORT in $PORTS; do
   if [[ "$PORT" == *:* ]]; then
     PUBLISHED_PORTS+=( "--publish=$PORT" )
