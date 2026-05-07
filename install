@@ -21,6 +21,7 @@ install() {
   $SUDO rm -rf "$PREFIX/inc" "$PREFIX/init"
   $SUDO cp -r "$SCRIPT_PATH/bin/inc" "$PREFIX/"
   $SUDO cp -r "$SCRIPT_PATH/bin/init" "$PREFIX/"
+  $SUDO cp "$SCRIPT_PATH/VERSION" "$PREFIX/VERSION"
 
   for CMD_PATH in "$SCRIPT_PATH"/bin/*; do
     [[ -d "$CMD_PATH" ]] && continue

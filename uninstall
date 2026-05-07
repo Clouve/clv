@@ -28,6 +28,7 @@ fi
 if [[ $# -eq 0 ]]; then
   uninstall_commands "$SCRIPT_PATH"/bin/*
   $SUDO rm -rf "$PREFIX/inc" "$PREFIX/init"
+  [[ -f "$PREFIX/VERSION" ]] && $SUDO rm "$PREFIX/VERSION"
   if [[ $PURGE -eq 1 && -d "$HOME/.clv" ]]; then
     rm -rf "$HOME/.clv"
     echo "clv purged ~/.clv/"
