@@ -4,10 +4,9 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv prettier
-docker run "$IT" --rm -a STDOUT \
-    --entrypoint "prettier" \
-    -e PATH="/root/bin:$PATH" \
-    -v "$CLVHOME/../node:/root" \
-    -v "$PWD:/clv" \
-    -w "/clv" \
-    node "$@"
+CLVHOME="$CLV/node"
+source "$SCRIPT_PATH"/inc/docker
+clv_docker_run \
+    --entrypoint prettier \
+    -e PATH="/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+    "node:${CLV_TAG:-lts}" "$@"

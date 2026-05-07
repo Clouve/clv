@@ -4,9 +4,5 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv alpine/git
-docker run "$IT" --rm -a STDOUT \
-    --entrypoint "git" \
-    -v "$CLVHOME:/root" \
-    -v "$PWD:/clv" \
-    -w "/clv" \
-    alpine/git "$@"
+source "$SCRIPT_PATH"/inc/docker
+clv_docker_run --entrypoint git "alpine/git:${CLV_TAG:-latest}" "$@"

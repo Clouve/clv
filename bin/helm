@@ -4,10 +4,8 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv alpine/helm
-docker run "$IT" --rm -a STDOUT \
-    --entrypoint "helm" \
+source "$SCRIPT_PATH"/inc/docker
+clv_docker_run \
+    --entrypoint helm \
     -v "$CLVHOME/.config:/root/.config" \
-    -v "$CLVHOME:/root" \
-    -v "$PWD:/clv" \
-    -w "/clv" \
-    alpine/helm "$@"
+    "alpine/helm:${CLV_TAG:-latest}" "$@"

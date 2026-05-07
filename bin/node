@@ -5,11 +5,8 @@ SCRIPT_PATH="$(
 )"
 source "$SCRIPT_PATH"/init/clv node
 source "$SCRIPT_PATH"/inc/ports
-docker run "$IT" --rm -a STDOUT \
-    "${PUBLISHED_PORTS[@]}" \
-    --entrypoint "node" \
-    -e PATH="/root/bin:$PATH" \
-    -v "$CLVHOME:/root" \
-    -v "$PWD:/clv" \
-    -w "/clv" \
-    node "$@"
+source "$SCRIPT_PATH"/inc/docker
+clv_docker_run \
+    --entrypoint node \
+    -e PATH="/root/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+    "node:${CLV_TAG:-lts}" "$@"
