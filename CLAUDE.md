@@ -41,7 +41,7 @@ Special cases:
 ./uninstall git python          # remove only listed shims
 ```
 
-There is no test suite, linter, or build step. Changes to a shim take effect after re-running `./install` (or by editing `/usr/local/bin/<cmd>` directly during development).
+Tests live under [tests/](tests/) and run via `make test` (bats-core, vendored as a submodule). Lint via `make lint` (shellcheck). There is no build step. Changes to a shim take effect after re-running `./install` (or by editing `/usr/local/bin/<cmd>` directly during development).
 
 ## When adding a new command
 
