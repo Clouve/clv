@@ -1,10 +1,18 @@
 #!/usr/bin/env bash
-# EXAMPLE: prefix your command with the following to publish 3000 and 4000 ports
-# PORTS="3000 4000"
+# PORTS is space-separated. Each token may be:
+#   8080                       → --publish=8080:8080
+#   8080:9090                  → --publish=8080:9090
+#   127.0.0.1:8080:8080        → --publish=127.0.0.1:8080:8080
+# If unset/empty, falls back to --network=host (Linux only — on Docker
+# Desktop for Mac/Windows host networking is bridge by default).
 PUBLISHED_PORTS=()
 for PORT in $PORTS; do
+  if [[ "$PORT" == *:* ]]; then
+    PUBLISHED_PORTS+=( "--publish=$PORT" )
+  else
     PUBLISHED_PORTS+=( "--publish=$PORT:$PORT" )
+  fi
 done
-if [[ $PUBLISHED_PORTS == "" ]]; then
+if [[ ${#PUBLISHED_PORTS[@]} -eq 0 ]]; then
   PUBLISHED_PORTS+=( "--network=host" )
 fi
