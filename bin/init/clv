@@ -3,20 +3,21 @@
 set -e
 CLVCMD=$(basename "$0")
 if [[ -t 0 ]]; then IT="-it"; else IT="-i"; fi
-if [[ ! -d ~/.clv ]]; then
-  mkdir -p ~/.clv
-fi
+
 CLV="$HOME/.clv"
+mkdir -p "$CLV"
+
 CLVHOME="$CLV/$CLVCMD"
-CLVINIT="$HOME/.clv/.init"
-if [[ ! -f "$CLVINIT" ]]; then
-  touch "$CLVINIT"
-fi
-INIT_PARAMS="$@"
-IMAGE=$1; shift
-if ! grep -q "^$INIT_PARAMS$" "$CLVINIT"; then
+CLVINIT="$CLV/.init"
+[[ -f "$CLVINIT" ]] || touch "$CLVINIT"
+
+INIT_PARAMS="$*"
+IMAGE="$1"; shift || true
+
+if ! grep -Fxq -- "$INIT_PARAMS" "$CLVINIT"; then
   if [[ -f "$SCRIPT_PATH/init/$IMAGE" ]]; then
     echo "clv is initializing $INIT_PARAMS"
+    # shellcheck disable=SC1090
     source "$SCRIPT_PATH/init/$IMAGE" "$@"
     echo "$INIT_PARAMS" >> "$CLVINIT"
   fi
