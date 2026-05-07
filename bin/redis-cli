@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+SCRIPT_PATH="$(
+  cd "$(dirname "$0")" || exit
+  pwd -P
+)"
+source "$SCRIPT_PATH"/init/clv redis
+source "$SCRIPT_PATH"/inc/ports
+source "$SCRIPT_PATH"/inc/user
+source "$SCRIPT_PATH"/inc/docker
+clv_docker_run --entrypoint redis-cli "redis:${CLV_TAG:-7-alpine}" "$@"
