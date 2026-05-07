@@ -1,54 +1,89 @@
 # clv
-## Shell commands wrapped in docker images
 
-Shell commands executed through docker images and transient containers. Each executed command instantiates a transient container by mapping its home directory to a local one (~/.clv/[CMD_HOME]). The container never persists, however, the home directory containing all the settings persists across executions.
+Thin Bash shims that wrap CLI tools so each invocation runs inside a transient Docker container. Persistent per-tool config lives at `~/.clv/<command>/`. Nothing to compile; install copies the shims to `/usr/local/bin/`.
 
-### Available commands are:
+## Available commands
 
-- aws (https://aws.amazon.com/cli/)
-- az (https://docs.microsoft.com/en-us/cli/azure/)
-- gcloud (https://cloud.google.com/sdk/gcloud/reference/)
-- git (https://git-scm.com/docs)
-- go (https://pkg.go.dev/cmd/go)
-- helm (https://helm.sh/docs/helm)
-- ncu (https://www.npmjs.com/package/npm-check-updates)
-- node (https://nodejs.org/api/cli.html)
-- npm (https://docs.npmjs.com/cli-documentation/cli)
-- prettier (https://prettier.io/docs/en/cli.html)
-- python (https://docs.python.org/3/)
+| Cloud | VCS | Languages | Build/Lint | Databases | K8s |
+|---|---|---|---|---|---|
+| `aws` | `git` | `node`, `npm`, `yarn`, `pnpm`, `bun`, `deno` | `make`, `prettier`, `ncu` | `psql`, `mysql`, `redis-cli` | `kubectl`, `helm` |
+| `az` |   | `go`, `python`, `cargo` |   |   | `terraform` |
+| `gcloud` |   |   |   |   |   |
 
-To expose container ports, just add PORTS as an environment variable. For example:
+Plus `clv` itself (`clv version | list | install | uninstall | update | prune`).
 
-`PORTS="8080 5432"`
+## Install
 
-For example, the following command will publish 8080 and 5432 ports:
+Install everything:
 
-`PORTS="8080 5432" npm start`
+```bash
+curl -fsSL https://raw.githubusercontent.com/Clouve/clv/main/web/install | bash
+```
 
-### Install
+Install a subset:
 
-Will install all or some of the available commands
+```bash
+curl -fsSL https://raw.githubusercontent.com/Clouve/clv/main/web/install | bash -s -- aws kubectl
+```
 
-Example 1: To install all commands:
+Install all but a few:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash`
+```bash
+curl -fsSL https://raw.githubusercontent.com/Clouve/clv/main/web/install | bash -s -- --skip mysql redis-cli
+```
 
-Example 2: To install only specific commands like go and node:
+## Uninstall
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- go node`
+```bash
+curl -fsSL https://raw.githubusercontent.com/Clouve/clv/main/web/uninstall | bash
+```
 
-Example 3: To install all but specific commands like git and python:
+`./uninstall --purge` also removes `~/.clv/`.
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/install | bash -s -- --skip git python`
+## Environment variables
 
-### Uninstall
+All shims respect:
 
-Will uninstall all or some of the previously installed commands
+| Var | Effect |
+|---|---|
+| `CLV_TAG` | Override the default image tag for the next call (`CLV_TAG=20 node script.js` uses `node:20`). |
+| `CLV_DRY_RUN=1` | Print the `docker run` command instead of executing it — useful for debugging. |
+| `CLV_DOCKER_ARGS` | Spliced verbatim into the `docker run` invocation (e.g. `CLV_DOCKER_ARGS=--memory=2g`). |
+| `CLV_MAP_USER=1` | Run as host UID/GID. Fixes root-owned files in `~/.clv/<cmd>/` on Linux; not needed on macOS Docker Desktop. |
+| `PORTS` | Space-separated. Bare numbers expand to `host:host`. Colon-form passes through. Unset → `--network=host`. |
 
-Example 1: To uninstall all commands:
+Examples:
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash`
+```bash
+PORTS="8080 5432" npm start
+PORTS="127.0.0.1:8080:8080" go run main.go
+CLV_TAG=3.12 python script.py
+CLV_DRY_RUN=1 git clone …    # see what would run
+```
 
-Example 2: To uninstall only specific commands like git and python:
+## Persistence
 
-`curl -s https://raw.githubusercontent.com/Clouve/clv/master/web/uninstall | bash -s -- git python`
+Each command's HOME is bind-mounted from `~/.clv/<cmd>/`, so credentials, configs, and globally-installed packages survive across calls. `node`, `npm`, `yarn`, `pnpm`, `ncu`, and `prettier` share a single `~/.clv/node/` so global packages are visible to all of them.
+
+## Notes / caveats
+
+- **macOS / Docker Desktop:** `--network=host` (the default when `PORTS` is unset) maps to bridge networking on Docker Desktop. If you need port access from the host, set `PORTS` explicitly.
+- **Linux file ownership:** Without `CLV_MAP_USER=1`, files written under `~/.clv/<cmd>/` are root-owned. Set `CLV_MAP_USER=1` per-call or in your shell profile.
+- **Image pulls:** First call to each shim pulls the image (~MB to GB depending on tool). `clv update` re-pulls all installed shims' images.
+
+## Hacking
+
+```bash
+# Lint
+make lint
+# Test
+make test
+# Re-install after edits
+./install
+```
+
+See [CLAUDE.md](CLAUDE.md) for architecture details.
+
+## License
+
+[MIT](LICENSE)
