@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+# Shared docker-run helper for all clv shims.
+#
+# Expects these to be set by the caller (the shim):
+#   $CLVHOME            persistent home dir for this tool (~/.clv/<cmd>)
+#   $IT                 -it or -i (set by init/clv)
+#   $PUBLISHED_PORTS[]  optional, populated by inc/ports
+#
+# Optional environment input from the user:
+#   CLV_DRY_RUN=1       print the docker command instead of running it
+#   CLV_DOCKER_ARGS     extra flags inserted into `docker run` verbatim
+
+clv_docker_run() {
+  local extra_args=()
+  if [[ -n "${CLV_DOCKER_ARGS:-}" ]]; then
+    # word-split intentionally; users pass shell-style flags here
+    # shellcheck disable=SC2206
+    extra_args=( $CLV_DOCKER_ARGS )
+  fi
+
+  local cmd=(
+    docker run "$IT" --rm
+    "${PUBLISHED_PORTS[@]}"
+    "${extra_args[@]}"
+    -v "$CLVHOME:/root"
+    -v "$PWD:/clv"
+    -w "/clv"
+    "$@"
+  )
+
+  if [[ "${CLV_DRY_RUN:-}" == "1" ]]; then
+    printf '%s ' "${cmd[@]}"
+    printf '\n'
+    return 0
+  fi
+
+  "${cmd[@]}"
+}
