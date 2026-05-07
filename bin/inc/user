@@ -3,6 +3,7 @@
 # the host user. Disabled by default because some images (e.g.
 # alpine/helm) hard-code paths under /root that are unwritable when
 # running as a non-root UID.
+# shellcheck disable=SC2034  # consumed by sourcing inc/docker
 USER_MOUNTS=()
 if [[ "${CLV_MAP_USER:-0}" == "1" ]]; then
   USER_MOUNTS=( --user "$(id -u):$(id -g)" )

@@ -2,11 +2,13 @@
 # expects [IMAGE] [PARAMETERS...]
 set -e
 CLVCMD=$(basename "$0")
+# shellcheck disable=SC2034  # consumed by sourcing shims
 if [[ -t 0 ]]; then IT="-it"; else IT="-i"; fi
 
 CLV="$HOME/.clv"
 mkdir -p "$CLV"
 
+# shellcheck disable=SC2034  # consumed by sourcing shims
 CLVHOME="$CLV/$CLVCMD"
 CLVINIT="$CLV/.init"
 [[ -f "$CLVINIT" ]] || touch "$CLVINIT"

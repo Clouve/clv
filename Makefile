@@ -4,4 +4,4 @@ test:
 	./tests/bats/bats-core/bin/bats tests/
 
 lint:
-	shellcheck install uninstall bin/* bin/init/* bin/inc/*
+	shellcheck --severity=warning install uninstall bin/inc/* bin/init/* $(shell find bin -maxdepth 1 -type f)

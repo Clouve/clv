@@ -6,6 +6,7 @@ SCRIPT_PATH="$(
 source "$SCRIPT_PATH"/init/clv pnpm
 source "$SCRIPT_PATH"/inc/ports
 source "$SCRIPT_PATH"/inc/user
+# shellcheck disable=SC2034  # consumed by sourcing inc/docker; overrides init/clv value to share node home
 CLVHOME="$CLV/node"
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run \

@@ -1,0 +1,46 @@
+name: ci
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  shellcheck:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: ludeeus/action-shellcheck@master
+        with:
+          scandir: '.'
+          ignore_paths: 'tests/bats'
+
+  bats:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - name: Run bats tests
+        run: ./tests/bats/bats-core/bin/bats tests/
+
+  install-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install to a temporary prefix
+        run: |
+          mkdir -p /tmp/clv-prefix
+          CLV_INSTALL_PREFIX=/tmp/clv-prefix ./install
+          test -x /tmp/clv-prefix/aws
+          test -x /tmp/clv-prefix/clv
+      - name: Verify clv version
+        run: |
+          PATH="/tmp/clv-prefix:$PATH"
+          clv version
+      - name: Uninstall
+        run: |
+          CLV_INSTALL_PREFIX=/tmp/clv-prefix ./uninstall
+          test ! -e /tmp/clv-prefix/aws

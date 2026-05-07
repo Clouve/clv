@@ -5,6 +5,7 @@ SCRIPT_PATH="$(
 )"
 source "$SCRIPT_PATH"/init/clv ncu
 # ncu shares node's persistent home so globally-installed npm pkgs are visible
+# shellcheck disable=SC2034  # consumed by sourcing inc/docker
 CLVHOME="$CLV/node"
 source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker

@@ -6,6 +6,7 @@ SCRIPT_PATH="$(
 source "$SCRIPT_PATH"/init/clv node
 source "$SCRIPT_PATH"/inc/ports
 # share node's home so global pkgs persist across `node` and `npm`
+# shellcheck disable=SC2034  # consumed by sourcing inc/docker
 CLVHOME="$CLV/node"
 source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker

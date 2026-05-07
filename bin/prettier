@@ -4,6 +4,7 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv prettier
+# shellcheck disable=SC2034  # consumed by sourcing inc/docker; shares node's persistent home
 CLVHOME="$CLV/node"
 source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker

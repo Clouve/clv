@@ -32,6 +32,7 @@ install() {
         echo "clv installed $CMD successfully!"
         ;;
       skip)
+        # shellcheck disable=SC2076  # literal string match is intentional
         if [[ " ${CMD_LIST[*]} " =~ " ${CMD} " ]]; then
           echo "clv skipped $CMD"
         else
@@ -40,6 +41,7 @@ install() {
         fi
         ;;
       commands)
+        # shellcheck disable=SC2076  # literal string match is intentional
         if [[ " ${CMD_LIST[*]} " =~ " ${CMD} " ]]; then
           $SUDO cp "$CMD_PATH" "$PREFIX/$CMD"
           echo "clv installed $CMD successfully!"
