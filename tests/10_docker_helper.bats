@@ -31,6 +31,9 @@ setup() {
     source "$SCRIPT_PATH/inc/docker"
     clv_docker_run myimage:1.0
   '
+  [ "$status" -eq 0 ]
+  [[ -n "$output" ]]
+  [[ "$output" == *"docker run"* ]]
   [[ "$output" != *"-a STDOUT"* ]]
 }
 

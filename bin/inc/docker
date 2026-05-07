@@ -3,7 +3,9 @@
 #
 # Expects these to be set by the caller (the shim):
 #   $CLVHOME            persistent home dir for this tool (~/.clv/<cmd>)
-#   $IT                 -it or -i (set by init/clv)
+#   $IT                 -it or -i (REQUIRED — set by init/clv; an unset
+#                       value injects an empty positional arg that breaks
+#                       docker run)
 #   $PUBLISHED_PORTS[]  optional, populated by inc/ports
 #
 # Optional environment input from the user:
@@ -29,7 +31,7 @@ clv_docker_run() {
   )
 
   if [[ "${CLV_DRY_RUN:-}" == "1" ]]; then
-    printf '%s ' "${cmd[@]}"
+    printf '%q ' "${cmd[@]}"
     printf '\n'
     return 0
   fi
