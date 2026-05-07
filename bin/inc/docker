@@ -20,9 +20,12 @@ clv_docker_run() {
     extra_args=( $CLV_DOCKER_ARGS )
   fi
 
+  # Defensive: callers that don't source inc/ports leave PUBLISHED_PORTS unset.
+  local published_ports=( "${PUBLISHED_PORTS[@]+"${PUBLISHED_PORTS[@]}"}" )
+
   local cmd=(
     docker run "$IT" --rm
-    "${PUBLISHED_PORTS[@]}"
+    "${published_ports[@]}"
     "${extra_args[@]}"
     -v "$CLVHOME:/root"
     -v "$PWD:/clv"
