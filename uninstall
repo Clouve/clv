@@ -1,42 +1,50 @@
 #!/usr/bin/env bash
+set -e
 SCRIPT_PATH="$(
   cd "$(dirname "$0")" || exit
   pwd -P
 )"
 
-uninstall_commands(){
-    for CMD_PATH in $@; do
-        CMD=$(basename "$CMD_PATH")
-        if [[ -e "/usr/local/bin/$CMD" ]]; then
-          if [[ ! -d "/usr/local/bin/$CMD" ]]; then
-            sudo rm "/usr/local/bin/$CMD"
-            echo "clv uninstalled $CMD successfully!"
-          fi
-        fi
-    done
+PREFIX="${CLV_INSTALL_PREFIX:-/usr/local/bin}"
+SUDO=""
+[[ -w "$PREFIX" ]] || SUDO="sudo"
+
+uninstall_commands() {
+  for CMD_PATH in "$@"; do
+    local CMD
+    CMD="$(basename "$CMD_PATH")"
+    if [[ -f "$PREFIX/$CMD" ]]; then
+      $SUDO rm "$PREFIX/$CMD"
+      echo "clv uninstalled $CMD successfully!"
+    fi
+  done
 }
 
-if [[ $1 ]]; then
-  if [[ $1 == "-h" || $1 == "--help" ]]; then
-    echo "USAGE: ./uninstall [cmd1 cmd2 ...]"
-    echo "Example 1: to uninstall all commands"
-    echo "./uninstall"
-    echo "Example 2: to uninstall git and python2 commands only"
-    echo "./uninstall git python2"
-  else
-    uninstall_commands $@
+PURGE=0
+if [[ "${1:-}" == "--purge" ]]; then
+  PURGE=1; shift
+fi
+
+if [[ $# -eq 0 ]]; then
+  uninstall_commands "$SCRIPT_PATH"/bin/*
+  $SUDO rm -rf "$PREFIX/inc" "$PREFIX/init"
+  if [[ $PURGE -eq 1 && -d "$HOME/.clv" ]]; then
+    rm -rf "$HOME/.clv"
+    echo "clv purged ~/.clv/"
   fi
+  echo "clv has been uninstalled successfully!"
+elif [[ "${1:-}" == "-h" || "${1:-}" == "--help" ]]; then
+  cat <<EOF
+USAGE: ./uninstall [--purge] [cmd1 cmd2 ...]
+
+  ./uninstall              uninstall all commands
+  ./uninstall git python   uninstall only git and python
+  ./uninstall --purge      uninstall all and remove ~/.clv/
+
+ENV:
+  CLV_INSTALL_PREFIX  uninstall source (default: /usr/local/bin)
+EOF
 else
-    uninstall_commands "$SCRIPT_PATH"/bin/*
-    if [[ -d /usr/local/bin/inc ]]; then
-        sudo rm -rf /usr/local/bin/inc
-    fi
-    if [[ -d /usr/local/bin/init ]]; then
-        sudo rm -rf /usr/local/bin/init
-    fi
-    if [[ -e "$HOME/.clv/.init" ]]; then
-        sudo rm "$HOME/.clv/.init"
-    fi
-    echo "clv has been uninstalled successfully!"
+  uninstall_commands "$@"
 fi
 echo "----------------------------------------------------------"
