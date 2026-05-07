@@ -4,5 +4,6 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv amazon/aws-cli
+source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run "amazon/aws-cli:${CLV_TAG:-2}" "$@"

@@ -4,6 +4,7 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv alpine/helm
+source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run \
     --entrypoint helm \

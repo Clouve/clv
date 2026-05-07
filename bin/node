@@ -5,6 +5,7 @@ SCRIPT_PATH="$(
 )"
 source "$SCRIPT_PATH"/init/clv node
 source "$SCRIPT_PATH"/inc/ports
+source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run \
     --entrypoint node \

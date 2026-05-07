@@ -7,6 +7,7 @@ source "$SCRIPT_PATH"/init/clv node
 source "$SCRIPT_PATH"/inc/ports
 # share node's home so global pkgs persist across `node` and `npm`
 CLVHOME="$CLV/node"
+source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run \
     --entrypoint npm \

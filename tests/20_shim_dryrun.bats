@@ -111,3 +111,15 @@ setup() {
   [ "$status" -eq 0 ]
   [[ "$output" == *"google/cloud-sdk:alpine"* ]]
 }
+
+@test "CLV_MAP_USER=1 adds --user flag" {
+  CLV_MAP_USER=1 CLV_DRY_RUN=1 run "$REPO_ROOT/bin/aws" --version
+  [ "$status" -eq 0 ]
+  [[ "$output" == *"--user "* ]]
+}
+
+@test "CLV_MAP_USER unset omits --user flag" {
+  CLV_DRY_RUN=1 run "$REPO_ROOT/bin/aws" --version
+  [ "$status" -eq 0 ]
+  [[ "$output" != *"--user "* ]]
+}

@@ -23,10 +23,14 @@ clv_docker_run() {
   # Defensive: callers that don't source inc/ports leave PUBLISHED_PORTS unset.
   local published_ports=( "${PUBLISHED_PORTS[@]+"${PUBLISHED_PORTS[@]}"}" )
 
+  # Defensive: callers that don't source inc/user leave USER_MOUNTS unset.
+  local user_mounts=( "${USER_MOUNTS[@]+"${USER_MOUNTS[@]}"}" )
+
   local cmd=(
     docker run "$IT" --rm
     "${published_ports[@]}"
     "${extra_args[@]}"
+    "${user_mounts[@]}"
     -v "$CLVHOME:/root"
     -v "$PWD:/clv"
     -w "/clv"

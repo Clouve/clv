@@ -4,5 +4,6 @@ SCRIPT_PATH="$(
   pwd -P
 )"
 source "$SCRIPT_PATH"/init/clv mcr.microsoft.com/azure-cli
+source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run --entrypoint az "mcr.microsoft.com/azure-cli:${CLV_TAG:-latest}" "$@"
