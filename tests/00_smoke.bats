@@ -24,6 +24,7 @@ setup_file() {
 @test "init/clv exists and is sourced by every shim" {
   for shim in "$REPO_ROOT"/bin/*; do
     [ -d "$shim" ] && continue
+    [[ "$(basename "$shim")" == "clv" ]] && continue  # meta-command, not a docker shim
     grep -qE '^[[:space:]]*(\.|source)[[:space:]].*init/clv' "$shim" \
       || fail "shim does not source init/clv: $shim"
   done

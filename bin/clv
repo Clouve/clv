@@ -1,0 +1,138 @@
+#!/usr/bin/env bash
+set -e
+SCRIPT_PATH="$(
+  cd "$(dirname "$0")" || exit
+  pwd -P
+)"
+
+PREFIX="${CLV_INSTALL_PREFIX:-/usr/local/bin}"
+VERSION_FILE="$SCRIPT_PATH/../VERSION"
+[[ -f "$VERSION_FILE" ]] || VERSION_FILE="$SCRIPT_PATH/VERSION"
+
+CLV_SHIMS=(aws az clv gcloud git go helm ncu node npm prettier python \
+           terraform kubectl yarn pnpm bun deno cargo psql mysql redis-cli make)
+
+clv_list() {
+  for s in "${CLV_SHIMS[@]}"; do
+    [[ -f "$PREFIX/$s" ]] && echo "$s"
+  done
+}
+
+clv_install() {
+  if [[ $# -eq 0 ]]; then
+    echo "usage: clv install <shim> [shim2 ...]" >&2
+    echo "       clv install --all" >&2
+    return 2
+  fi
+  local branch="${CLV_BRANCH:-main}"
+  local args=()
+  if [[ "$1" == "--all" ]]; then
+    : # no args = install all in web/install
+  else
+    args=( "$@" )
+  fi
+  curl -fsSL "https://raw.githubusercontent.com/Clouve/clv/${branch}/web/install" \
+    | bash -s -- "${args[@]}"
+}
+
+clv_uninstall() {
+  if [[ $# -eq 0 ]]; then
+    echo "usage: clv uninstall <shim> [shim2 ...]" >&2
+    echo "       clv uninstall --all" >&2
+    echo "       clv uninstall --purge" >&2
+    return 2
+  fi
+  local branch="${CLV_BRANCH:-main}"
+  local args=()
+  if [[ "$1" == "--all" ]]; then
+    : # no args = uninstall all
+  elif [[ "$1" == "--purge" ]]; then
+    args=( "--purge" )
+  else
+    args=( "$@" )
+  fi
+  curl -fsSL "https://raw.githubusercontent.com/Clouve/clv/${branch}/web/uninstall" \
+    | bash -s -- "${args[@]}"
+}
+
+# Extract image:tag tokens from an installed shim by dry-running it.
+shim_image() {
+  local shim="$1"
+  CLV_DRY_RUN=1 "$shim" --version 2>/dev/null \
+    | tr ' ' '\n' \
+    | grep -E '^[a-z0-9./_-]+:[a-zA-Z0-9._-]+$' \
+    | grep -v '^/' \
+    | head -n1 || true
+}
+
+clv_update() {
+  for s in $(clv_list); do
+    local img
+    img="$(shim_image "$PREFIX/$s")"
+    if [[ -n "$img" ]]; then
+      echo "==> docker pull $img  (used by $s)"
+      docker pull "$img" || true
+    fi
+  done
+}
+
+clv_prune() {
+  echo "==> docker image prune for clv-tracked images"
+  for s in $(clv_list); do
+    local img
+    img="$(shim_image "$PREFIX/$s")"
+    [[ -n "$img" ]] && docker image prune -f --filter "label=org.clouve.clv=$img" || true
+  done
+  echo "==> ~/.clv/<cmd>/ dirs that no longer have an installed shim:"
+  if [[ -d "$HOME/.clv" ]]; then
+    for d in "$HOME/.clv"/*/; do
+      [[ -d "$d" ]] || continue
+      local name
+      name="$(basename "$d")"
+      if [[ ! -f "$PREFIX/$name" ]]; then
+        echo "  $d"
+      fi
+    done
+    echo "(remove manually with: rm -rf <path>)"
+  fi
+}
+
+clv_version() {
+  if [[ -f "$VERSION_FILE" ]]; then
+    cat "$VERSION_FILE"
+  else
+    echo "unknown"
+  fi
+}
+
+case "${1:-}" in
+  version|--version|-v) clv_version ;;
+  list)                  clv_list ;;
+  install)               shift; clv_install "$@" ;;
+  uninstall)             shift; clv_uninstall "$@" ;;
+  update)                clv_update ;;
+  prune)                 clv_prune ;;
+  ""|-h|--help|help)
+    cat <<EOF
+clv — docker-shim manager
+
+USAGE: clv <subcommand>
+
+  version              print clv version
+  list                 list installed shims
+  install <shim>...    install one or more shims (or --all)
+  uninstall <shim>...  uninstall one or more shims (or --all, --purge)
+  update               docker pull every image used by installed shims
+  prune                prune unused clv images and report stale ~/.clv dirs
+  help                 show this message
+
+ENV:
+  CLV_INSTALL_PREFIX   install prefix (default: /usr/local/bin)
+  CLV_BRANCH           branch for install/uninstall fetch (default: main)
+EOF
+    ;;
+  *)
+    echo "clv: unknown subcommand '$1' (try: clv help)" >&2
+    exit 2
+    ;;
+esac
