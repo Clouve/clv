@@ -5,4 +5,5 @@ load 'helpers/load'
   CLV_DRY_RUN=1 run "$REPO_ROOT/bin/pnpm" --version
   [ "$status" -eq 0 ]
   [[ "$output" == *"--entrypoint pnpm"* ]]
+  [[ "$output" == *"/.clv/node:/root"* ]]
 }

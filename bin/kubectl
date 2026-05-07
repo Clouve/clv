@@ -3,7 +3,7 @@ SCRIPT_PATH="$(
   cd "$(dirname "$0")" || exit
   pwd -P
 )"
-source "$SCRIPT_PATH"/init/clv bitnami/kubectl
+source "$SCRIPT_PATH"/init/clv kubectl
 source "$SCRIPT_PATH"/inc/user
 source "$SCRIPT_PATH"/inc/docker
 clv_docker_run --entrypoint kubectl \

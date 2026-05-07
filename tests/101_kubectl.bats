@@ -6,4 +6,6 @@ load 'helpers/load'
   [ "$status" -eq 0 ]
   [[ "$output" == *"bitnami/kubectl"* ]]
   [[ "$output" == *"--entrypoint kubectl"* ]]
+  [[ "$output" == *"/.kube:/.kube"* ]]
+  [[ "$output" == *"KUBECONFIG=/.kube/config"* ]]
 }
